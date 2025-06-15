@@ -7,6 +7,8 @@ import com.lj.ordermanagementsystem.mapper.OrderMapper;
 import com.lj.ordermanagementsystem.repository.OrderRepository;
 import com.lj.ordermanagementsystem.service.OrderService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,7 @@ public class OrderServiceImpl implements OrderService {
     private KafkaTemplate<String, Order> kafkaTemplate;
 
     @Override
+    @CachePut(value = "orders", key = "#result.id")
     public OrderDto createOrder(OrderDto orderDto) {
         Order order = OrderMapper.toOrder(orderDto);
         Order savedOrder = orderRepository.save(order);
@@ -31,6 +34,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Cacheable(value = "orders", key = "#orderId")
     public OrderDto getOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(

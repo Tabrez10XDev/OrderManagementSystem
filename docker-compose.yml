@@ -21,7 +21,7 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092   # 👈 change this from localhost
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092   # 👈 change this from localhost
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092             # 👈 explicitly allow external connections
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
 
@@ -36,3 +36,18 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
     depends_on:
       - kafka
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+
