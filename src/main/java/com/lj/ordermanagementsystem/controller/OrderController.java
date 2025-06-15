@@ -11,7 +11,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/employees")
+@RequestMapping("/api/orders")
 public class OrderController {
     private OrderService orderService;
 
@@ -34,7 +34,7 @@ public class OrderController {
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable("{id}") Long orderId,
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable("id") Long orderId,
                                                 @RequestBody OrderDto updateOrder){
         OrderDto updatedOrder = orderService.updateOrder(orderId, updateOrder);
         return new ResponseEntity<>(updatedOrder, HttpStatus.OK);

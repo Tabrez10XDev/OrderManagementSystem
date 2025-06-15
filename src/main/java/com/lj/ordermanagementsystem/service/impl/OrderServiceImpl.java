@@ -7,6 +7,8 @@ import com.lj.ordermanagementsystem.mapper.OrderMapper;
 import com.lj.ordermanagementsystem.repository.OrderRepository;
 import com.lj.ordermanagementsystem.service.OrderService;
 import lombok.AllArgsConstructor;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +18,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    private static final String TOPIC = "orders"; // Kafka topic
     private OrderRepository orderRepository;
+    private KafkaTemplate<String, Order> kafkaTemplate;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
@@ -49,9 +53,9 @@ public class OrderServiceImpl implements OrderService {
         order.setName(updateOrder.getName());
         order.setPrice(updateOrder.getPrice());
         order.setQuantity(updateOrder.getQuantity());
-
-        Order updatedOrder = orderRepository.save(order);
-        return OrderMapper.toOrderDto(updatedOrder);
+        kafkaTemplate.send(TOPIC, order);
+//        Order updatedOrder = orderRepository.save(order);
+        return OrderMapper.toOrderDto(order);
     }
 
     @Override
@@ -61,5 +65,12 @@ public class OrderServiceImpl implements OrderService {
         );
         orderRepository.deleteById(id);
 
+    }
+
+
+    @KafkaListener(topics = "orders", groupId = "order-group")
+    public void processOrderUpdates(Order message) {
+        System.out.println("📥 Consumed message: " + message);
+        // TODO: parse JSON string to Order and save to DB if needed
     }
 }
