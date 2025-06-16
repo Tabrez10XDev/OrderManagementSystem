@@ -134,7 +134,7 @@ management.endpoint.prometheus.enabled=true
 - Horizontal scaling via Docker Swarm or Kubernetes
 
 ---
-![Grafana Dashboard Screenshot](/grafana-output.png)
+![Grafana Dashboard Screenshot](/grafana_output.png)
 ---
 
 ## 📌 Conclusion  
