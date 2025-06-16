@@ -26,6 +26,7 @@ This is a scalable, event-driven **Order Management System** built with **Spring
 | **Events**   | Apache Kafka                        |
 | **Monitoring** | Spring Actuator, Prometheus, Grafana |
 | **Containers** | Docker & Docker Compose           |
+| **JUnit & Mockito** | Automated Testing           |
 
 ---
 
@@ -132,6 +133,8 @@ management.endpoint.prometheus.enabled=true
 - Advanced Prometheus alerting
 - Horizontal scaling via Docker Swarm or Kubernetes
 
+---
+![Grafana Dashboard Screenshot](/grafana-output.png)
 ---
 
 ## 📌 Conclusion  
