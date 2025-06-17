@@ -12,7 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderDto {
 
-    private long id;
+    private Long id;
     private String name;
     private Integer quantity;
     private Double price;
